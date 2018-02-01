@@ -11,6 +11,10 @@
 /* Include Headers -----------------------------------------------------------*/
 // Standard Header
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 
@@ -39,14 +43,19 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	char txbuf[BUFSIZE];
+	scanf("%s", txbuf);
+	txbuf[strlen(txbuf)] = '\0';
+	write(csock, txbuf, strlen(txbuf) + 1);
+
 	int read_len;
-	char buf[BUFSIZE];
-	if ((read_len = read(csock, buf, sizeof(buf))) < 0) {
+	char rxbuf[BUFSIZE];
+	if ((read_len = read(csock, rxbuf, sizeof(rxbuf))) < 0) {
 		return -1;
 	}
 
-	buf[read_len] = '\0';
-	printf("Received data: %s\n", buf);
+	rxbuf[read_len] = '\0';
+	printf("Received data: %s\n", rxbuf);
 
 	close(csock);
 }

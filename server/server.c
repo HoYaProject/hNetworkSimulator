@@ -9,13 +9,15 @@
  ******************************************************************************/
 
 /* Include Headers -----------------------------------------------------------*/
-// Standard Header
+// Standard
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+// System
+#include "server_conf.h"
 
 /* Main Function -------------------------------------------------------------*/
 int main(int argc, char* argv[]) {
@@ -33,12 +35,12 @@ int main(int argc, char* argv[]) {
 	saddr.sin_port = htons(sport);
 
 	if (bind(ssock, (struct sockaddr*)&saddr, sizeof(saddr)) < 0) {
-		fprintf(stderr, "Error: bind failed");
+		fprintf(stderr, "Error: bind() failed");
 		return -1;
 	}
 
-	if (listen(ssock, 5) < 0) {
-		fprintf(stderr, "Error: listen failed");
+	if (listen(ssock, MAX_CLIENT) < 0) {
+		fprintf(stderr, "Error: listen() failed");
 		return -1;
 	}
 
@@ -47,8 +49,27 @@ int main(int argc, char* argv[]) {
 		socklen_t caddr_len = sizeof(caddr);
 		int csock = accept(ssock, (struct sockaddr*)&caddr, &caddr_len);
 
-		char buf[] = "Hello World!\n";
-		write(csock, buf, sizeof(buf));
+		int n;
+		char txbuf[BUFSIZE] = "Welcome\r\n";
+		char rxbuf[BUFSIZE];
+		int len = 0;
+		while ((n = read(csock, &rxbuf[len], 1)) > 0) {
+			if (rxbuf[len] == '\r')
+				continue;
+			if (rxbuf[len] == '\n')
+				break;
+			if (rxbuf[len] == '\0')
+				break;
+
+			if (len == BUFSIZE)
+				break;
+			++len;
+		}
+		rxbuf[len] = '\0';
+
+		if (!strcmp(rxbuf, "print")) {
+			write(csock, txbuf, strlen(txbuf));
+		}
 
 		close(csock);
 	}
