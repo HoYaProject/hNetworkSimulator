@@ -4,6 +4,11 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set (CMAKE_C_COMPILER "/usr/bin/clang")
 set (CMAKE_C_FLAGS "-std=c11 -Os -Wall -Wextra -Wshadow")
 
+include_directories (
+	server
+	utils
+)
+
 file (GLOB SERVER_SRCS
 	server/server.c
 )
