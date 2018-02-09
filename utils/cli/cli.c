@@ -34,7 +34,8 @@ void CLI_Init(void) {
 	struct termios	new_tty = old_tty;
 
 	new_tty.c_lflag &= ~ICANON;	// disable line-at-a-time
-	//new_tty.c_lflag &= ~ECHO;		// disable echo
+	new_tty.c_lflag &= ~ECHO;		// disable echo
+	new_tty.c_lflag &= ~ECHOE;	// ERASE, WERASE
 	new_tty.c_cc[VMIN] = 0;			// don't wait for character
 	new_tty.c_cc[VTIME] = 0;		// no minimum wait time
 
@@ -90,6 +91,7 @@ static void makeCommand(char ch) {
 	static int	idx = 0;
 
 	if ((ch == '\r') || (ch == '\n')) {
+		write(STDOUT_FILENO, &ch, 1);
 		if (cmd[idx - 1] == 0x20)
 			--idx;
 		cmd[idx++] = '\0';
@@ -97,14 +99,22 @@ static void makeCommand(char ch) {
 		idx = 0;
 	}
 	else if (ch == 0x20) {		// <SPACE>
+		write(STDOUT_FILENO, &ch, 1);
 		if ((idx != 0) && (cmd[idx - 1] != 0x20))
 			cmd[idx++] = ch;
 	}
 	else if (ch == 0x7f) {		// <BACKSPACE>
+		ch = '\b';
+		write(STDOUT_FILENO, &ch, 1);
+		ch = ' ';
+		write(STDOUT_FILENO, &ch, 1);
+		ch = '\b';
+		write(STDOUT_FILENO, &ch, 1);
 		if (idx > 0)
 			--idx;
 	}
 	else {
+		write(STDOUT_FILENO, &ch, 1);
 		cmd[idx++] = ch;
 	}
 }
