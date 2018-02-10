@@ -14,6 +14,7 @@
 #include <unistd.h>
 // System
 #include "hDef.h"
+#include "log.h"
 #include "cli.h"
 
 /* Private Function Prototypes -----------------------------------------------*/
