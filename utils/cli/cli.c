@@ -1,5 +1,5 @@
 /*******************************************************************************
- * @file		cli/cli.c
+ * @file		utils/cli/cli.c
  * @brief		Command line interface module.
  * @author	llHoYall <hoya128@gmail.com>
  *******************************************************************************

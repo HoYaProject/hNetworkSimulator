@@ -8,11 +8,13 @@ include_directories (
 	utils
 	utils/log
 	utils/cli
+	node
 )
 
 file (GLOB SRCS
 	utils/log/log.c
 	utils/cli/cli.c
+	node/node.c
 	main.c
 )
 
