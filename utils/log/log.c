@@ -49,3 +49,30 @@ void Log_Print(const eLOG_LEVEL lv, const char* fmt, ...) {
 
 	puts(pstr);
 }
+
+void Log_Dump(const char* data, int len) {
+	int i;
+	uint8_t	buf[17];
+
+	printf("=== Dump ============================================================\n");
+	for (i = 0; i < len; ++i) {
+		if ((i % 16) == 0) {
+			if (i != 0)
+				printf("    %s\n", buf);
+		}
+		printf(" %02x", data[i]);
+
+		if ((data[i] < 0x20) || (0x7e < data[i]))
+			buf[i % 16] = '.';
+		else
+			buf[i % 16] = data[i];
+		buf[(i % 16) + 1] = '\0';
+	}
+
+	while ((i % 16) != 0) {
+		printf("   ");
+		++i;
+	}
+	printf("    %s\n", buf);
+	printf("=====================================================================\n");
+}

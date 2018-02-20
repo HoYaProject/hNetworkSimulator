@@ -29,7 +29,7 @@ typedef enum _eLOG_LEVEL {
 } eLOG_LEVEL;
 
 /* Macros --------------------------------------------------------------------*/
-#define LOG(fmt, ...)		Log_Print(eLOG_LEVEL_NONE, fmt, ##__VA_ARGS__)
+#define LOG(fmt, ...)						Log_Print(eLOG_LEVEL_NONE, fmt, ##__VA_ARGS__)
 
 #if _CONFIG_LOG_LEVEL >= LOG_LEVEL_USER
 	#define	LOG_User(fmt, ...)		Log_Print(eLOG_LEVEL_USER, fmt, ##__VA_ARGS__)
@@ -49,7 +49,10 @@ typedef enum _eLOG_LEVEL {
 	#define LOG_Debug(fmt, ...)
 #endif
 
+#define LOG_Dump(data, len)			Log_Dump(data, len)
+
 /* API Prototypes ------------------------------------------------------------*/
 void Log_Print(const eLOG_LEVEL lv, const char* fmt, ...);
+void Log_Dump(const char* data, int len);
 
 #endif
