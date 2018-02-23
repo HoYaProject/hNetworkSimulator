@@ -2,7 +2,6 @@
  * @file		utils/cli/cli.h
  * @brief		Command line interface module.
  * @author	llHoYall <hoya128@gmail.com>
- *******************************************************************************
  * @version	v1.0
  * @note
  *	- 2018.02.07	Created.

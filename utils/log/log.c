@@ -10,6 +10,7 @@
 /* Include Headers -----------------------------------------------------------*/
 // Standard
 #include <stdio.h>
+#include <stdint.h>
 #include <stdarg.h>
 // System
 #include "log.h"

@@ -2,7 +2,6 @@
  * @file		utils/cli/cli.c
  * @brief		Command line interface module.
  * @author	llHoYall <hoya128@gmail.com>
- *******************************************************************************
  * @version	v1.0
  * @note
  *	- 2018.02.07	Created.
@@ -13,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include <termios.h>
 // System
@@ -50,8 +50,8 @@ void CLI_Init(void) {
 
 void CLI_DisplayMenu(void) {
 	puts("");
-	puts("#----------* Menu *----------#");
-	puts("#****************************#");
+	puts("#------------* Menu *------------#");
+	puts("#********************************#");
 	int i = 0;
 	while (1) {
 		if (ptCmd[i].cmd == NULL)
@@ -59,7 +59,7 @@ void CLI_DisplayMenu(void) {
 		printf(" %s%s\n", ptCmd[i].cmd, ptCmd[i].desc);
 		++i;
 	}
-	puts("#****************************#");
+	puts("#********************************#");
 }
 
 void CLI_GetCommand(void) {
@@ -160,7 +160,7 @@ static void processCommand(char* cmd) {
 			}
 		}
 
-		if (strcmp(name, ptCmd[i].cmd) == 0) {
+		if (strcasecmp(name, ptCmd[i].cmd) == 0) {
 			ptCmd[i].pfn(argc, argv);
 		}
 		++i;
