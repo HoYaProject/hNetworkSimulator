@@ -15,6 +15,10 @@
 #include <signal.h>
 #include <time.h>
 
+/* Definitions ---------------------------------------------------------------*/
+// Handler
+typedef void (*tmhandler)(int, siginfo_t*, void*);
+
 /* Enumerations --------------------------------------------------------------*/
 typedef enum _eTIMER_STATUS {
 	eTIMER_STATUS_SUCCESS			= 0,
@@ -22,7 +26,9 @@ typedef enum _eTIMER_STATUS {
 } eTIMER_STATUS;
 
 /* API Prototypes ------------------------------------------------------------*/
-eTIMER_STATUS Timer_Create1(const int msec, void (*pfn)(int));
-eTIMER_STATUS Timer_Create2(timer_t* tid, int msec, void (*pfn)(int, siginfo_t*, void*));
+eTIMER_STATUS TIMER_CreateSystemTimer(const int msec);
+eTIMER_STATUS TIMER_GetTime(int* const time);
+
+eTIMER_STATUS TIMER_CreateUserTimer(timer_t* tid, const int msec, tmhandler handler);
 
 #endif

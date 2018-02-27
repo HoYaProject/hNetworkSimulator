@@ -7,6 +7,7 @@ set (CMAKE_C_FLAGS "-std=gnu11 -Os -Wall -Wextra -Wshadow")
 include_directories (
 	utils
 	utils/log
+	utils/timer
 	utils/cli
 	node
 	packet
@@ -14,6 +15,7 @@ include_directories (
 
 file (GLOB SRCS
 	utils/log/log.c
+	utils/timer/timer.c
 	utils/cli/cli.c
 	node/node.c
 	packet/packet.c
@@ -22,3 +24,4 @@ file (GLOB SRCS
 
 project (ns)
 add_executable(ns ${SRCS})
+target_link_libraries (ns rt)

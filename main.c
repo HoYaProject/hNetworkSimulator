@@ -5,10 +5,6 @@
  * @version	v1.0
  * @note
  *	- 2018.02.07	Created.
- *******************************************************************************
- * @TODO
- *	- TIMER: Refactoring.
- *	- CLI: Remove add command function.
  ******************************************************************************/
 
 /* Include Headers -----------------------------------------------------------*/
@@ -19,11 +15,13 @@
 // System
 #include "hDef.h"
 #include "log.h"
+#include "timer.h"
 #include "cli.h"
 #include "node.h"
 #include "packet.h"
 
 /* Private Function Prototypes -----------------------------------------------*/
+// Command
 static void CMD_Help(int argc, char* argv[]);
 static void CMD_Start(int argc, char* argv[]);
 static void CMD_SendRequest(int argc, char* argv[]);
@@ -46,6 +44,8 @@ tCOMMAND	tCmd[] = {
 int main(int argc, char* argv[]) {
 	UNUSED(argc);
 	UNUSED(argv);
+
+	TIMER_CreateSystemTimer(1);
 
 	CLI_Init(tCmd);
 	CLI_DisplayMenu();

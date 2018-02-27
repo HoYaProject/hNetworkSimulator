@@ -14,6 +14,7 @@
 #define NODE_UNICAST_ADDR			7000
 #define NODE_BROADCAST_ADDR		8000
 
+/* Definitions ---------------------------------------------------------------*/
 typedef void (*rxhandler)(const int* const, const void* const);
 
 /* Enumerations --------------------------------------------------------------*/
