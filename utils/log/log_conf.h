@@ -2,7 +2,6 @@
  * @file		utils/log/log_conf.h
  * @brief		Configure log module.
  * @author	llHoYall <hoya128@gmail.com>
- *******************************************************************************
  * @version	v1.0
  * @note
  *	- 2018.01.28	Created.

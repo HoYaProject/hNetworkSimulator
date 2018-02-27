@@ -19,9 +19,8 @@ typedef struct _tCOMMANDS {
 } tCOMMAND, *ptCOMMAND;
 
 /* API Prototypes ------------------------------------------------------------*/
-void CLI_Init(void);
+void CLI_Init(const ptCOMMAND cmd);
 void CLI_DisplayMenu(void);
 void CLI_GetCommand(void);
-void CLI_AddCommand(ptCOMMAND cmd);
 
 #endif

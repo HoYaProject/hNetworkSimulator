@@ -25,11 +25,11 @@ static ptCOMMAND	ptCmd;
 /* Private Function Prototypes -----------------------------------------------*/
 static void kbcleanup(void);
 static int getch(void);
-static void makeCommand(char ch);
-static void processCommand(char* cmd);
+static void makeCommand(const char ch);
+static void processCommand(const char* const cmd);
 
 /* APIs ----------------------------------------------------------------------*/
-void CLI_Init(void) {
+void CLI_Init(const ptCOMMAND cmd) {
 	tcgetattr(STDIN_FILENO, &old_tty);
 	struct termios	new_tty = old_tty;
 
@@ -46,12 +46,14 @@ void CLI_Init(void) {
 		perror("tcsetattr()");
 		exit(1);
 	}
+
+	ptCmd = cmd;
 }
 
 void CLI_DisplayMenu(void) {
 	puts("");
-	puts("#------------* Menu *------------#");
-	puts("#********************************#");
+	puts("#-------------* Menu *-------------#");
+	puts("#**********************************#");
 	int i = 0;
 	while (1) {
 		if (ptCmd[i].cmd == NULL)
@@ -59,7 +61,7 @@ void CLI_DisplayMenu(void) {
 		printf(" %s%s\n", ptCmd[i].cmd, ptCmd[i].desc);
 		++i;
 	}
-	puts("#********************************#");
+	puts("#**********************************#");
 }
 
 void CLI_GetCommand(void) {
@@ -67,10 +69,6 @@ void CLI_GetCommand(void) {
 	if (ch != '\0') {
 		makeCommand(ch);
 	}
-}
-
-void CLI_AddCommand(ptCOMMAND cmd) {
-	ptCmd = cmd;
 }
 
 /* Private Functions ---------------------------------------------------------*/
@@ -86,7 +84,7 @@ static int getch(void) {
 		return ch;
 }
 
-static void makeCommand(char ch) {
+static void makeCommand(const char ch) {
 	static char cmd[32];
 	static int	idx = 0;
 
@@ -104,12 +102,12 @@ static void makeCommand(char ch) {
 			cmd[idx++] = ch;
 	}
 	else if (ch == 0x7f) {		// <BACKSPACE>
-		ch = '\b';
-		write(STDOUT_FILENO, &ch, 1);
-		ch = ' ';
-		write(STDOUT_FILENO, &ch, 1);
-		ch = '\b';
-		write(STDOUT_FILENO, &ch, 1);
+		char c = '\b';
+		write(STDOUT_FILENO, &c, 1);
+		c = ' ';
+		write(STDOUT_FILENO, &c, 1);
+		c = '\b';
+		write(STDOUT_FILENO, &c, 1);
 		if (idx > 0)
 			--idx;
 	}
@@ -119,7 +117,7 @@ static void makeCommand(char ch) {
 	}
 }
 
-static void processCommand(char* cmd) {
+static void processCommand(const char* const cmd) {
 	int i = 0;
 	while (1) {
 		if (ptCmd[i].cmd == NULL)

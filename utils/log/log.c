@@ -16,7 +16,7 @@
 #include "log.h"
 
 /* APIs ----------------------------------------------------------------------*/
-void Log_Print(const eLOG_LEVEL lv, const char* fmt, ...) {
+void Log_Print(const eLOG_LEVEL lv, const char* const fmt, ...) {
 	va_list	args;
 	int	len = 0;
 	char	str[256];
@@ -50,7 +50,7 @@ void Log_Print(const eLOG_LEVEL lv, const char* fmt, ...) {
 	puts(pstr);
 }
 
-void Log_Dump(const char* data, int len) {
+void Log_Dump(const int len, const char* const data) {
 	int i;
 	uint8_t	buf[17];
 
@@ -60,7 +60,7 @@ void Log_Dump(const char* data, int len) {
 			if (i != 0)
 				printf("    %s\n", buf);
 		}
-		printf(" %02x", data[i]);
+		printf(" %02x", (uint8_t)data[i]);
 
 		if ((data[i] < 0x20) || (0x7e < data[i]))
 			buf[i % 16] = '.';

@@ -14,6 +14,8 @@
 #define NODE_UNICAST_ADDR			7000
 #define NODE_BROADCAST_ADDR		8000
 
+typedef void (*rxhandler)(const int* const, const void* const);
+
 /* Enumerations --------------------------------------------------------------*/
 typedef enum _eNODE_STATUS {
 	eNODE_STATUS_SUCCESS			= 0,
@@ -30,15 +32,17 @@ typedef enum _eNODE_STATUS {
 
 /* Structures ----------------------------------------------------------------*/
 typedef struct _tNODE {
-	int	uaddr;
-	int	baddr;
+	int				uaddr;
+	int				baddr;
+	rxhandler	handler;
 } tNODE;
 
 /* API Prototypes ------------------------------------------------------------*/
-eNODE_STATUS NODE_Create(int addr);
+eNODE_STATUS NODE_Create(const int addr, rxhandler handler);
 eNODE_STATUS NODE_Run(void);
-eNODE_STATUS NODE_SendUnicast(char* dip, int daddr, int len, char* data);
-eNODE_STATUS NODE_SendBroadcast(int len, char* data);
+eNODE_STATUS NODE_SendUnicast(const char* const dip, const int daddr, const int len, const void* const data);
+eNODE_STATUS NODE_SendBroadcast(const int len, const void* const data);
 eNODE_STATUS NODE_Destroy(void);
+eNODE_STATUS NODE_GetMyAddress(int* const addr);
 
 #endif

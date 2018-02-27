@@ -9,12 +9,14 @@ include_directories (
 	utils/log
 	utils/cli
 	node
+	packet
 )
 
 file (GLOB SRCS
 	utils/log/log.c
 	utils/cli/cli.c
 	node/node.c
+	packet/packet.c
 	main.c
 )
 

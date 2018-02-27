@@ -48,10 +48,10 @@ typedef enum _eLOG_LEVEL {
 	#define LOG_Debug(fmt, ...)
 #endif
 
-#define LOG_Dump(data, len)			Log_Dump(data, len)
+#define LOG_Dump(len, data)			Log_Dump((len), (data))
 
 /* API Prototypes ------------------------------------------------------------*/
-void Log_Print(const eLOG_LEVEL lv, const char* fmt, ...);
-void Log_Dump(const char* data, int len);
+void Log_Print(const eLOG_LEVEL lv, const char* const fmt, ...);
+void Log_Dump(const int len, const char* const data);
 
 #endif
