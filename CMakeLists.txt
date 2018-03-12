@@ -9,6 +9,7 @@ include_directories (
 	utils/log
 	utils/timer
 	utils/cli
+	utils/ll
 	node
 	packet
 )
@@ -17,6 +18,7 @@ file (GLOB SRCS
 	utils/log/log.c
 	utils/timer/timer.c
 	utils/cli/cli.c
+	utils/ll/ll.c
 	node/node.c
 	packet/packet.c
 	main.c
