@@ -32,5 +32,9 @@ class Node:
         self.send_command('Start %d' % self.nodeid)
         self.pexpect.expect('\[USR\] Success: Create a node.')
 
+    def sendReq(self, dst):
+        self.send_command('req {}'.format(dst))
+        self.pexpect.expect('\[USR\] Success: Send a request.')
+
     def stop(self):
         self.send_command('Exit')

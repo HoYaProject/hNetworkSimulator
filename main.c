@@ -12,14 +12,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-// System
+// System - Util
 #include "hDef.h"
 #include "log.h"
-#include "timer.h"
 #include "cli.h"
 #include "ll.h"
-#include "node.h"
-#include "packet.h"
+// System - Platform
+#include "timer.h"
+#include "socket.h"
+// System - Stack
+#include "api.h"
 
 /* Private Function Prototypes -----------------------------------------------*/
 // Command
@@ -32,11 +34,11 @@ static void CMD_Exit(int argc, char* argv[]);
 static void Receive(const int* const len, const void* const data);
 
 /* Private Variables ---------------------------------------------------------*/
-tCOMMAND	tCmd[] = {
+tCLI_COMMAND	tCmd[] = {
 	{"Help", "        Display menu", CMD_Help},
 	{"Start", "       Start a node\r\n             - <addr (uint8)>", CMD_Start},
-	{"Req", "         Send request\r\n             - <addr (uint8), data>", CMD_SendRequest},
-	{"Ntf", "         Send notification\r\n             - <data>", CMD_SendNotification},
+	{"Req", "         Send request\r\n             - <addr (uint8)>", CMD_SendRequest},
+	{"Ntf", "         Send notification", CMD_SendNotification},
 	{"Exit", "        Exit program", CMD_Exit},
 	{NULL, NULL, NULL}
 };
@@ -53,7 +55,7 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		CLI_GetCommand();
-		NODE_Run();
+		SOCKET_Run();
 
 		usleep(100);
 	}
@@ -76,58 +78,52 @@ static void CMD_Start(int argc, char* argv[]) {
 	}
 
 	int addr = atoi(argv[0]);
-	if (NODE_Create(addr, Receive) < 0) {
-		LOG_User("Fail: Create a node.");
-		return;
+	if (SOCKET_Create(addr, Receive) < 0) {
+		LOG_User("Fail: Create a socket interface.");
+		return ;
 	}
+	if (API_Init(addr) < 0) {
+		LOG_User("Fail: Init stack.");
+		return ;
+	}
+
 	LOG_User("Success: Create a node.");
 }
 
 static void CMD_SendRequest(int argc, char* argv[]) {
-	if (argc != 2) {
-		LOG_User("Fail: Wrong argument.");
-		return ;
-	}
-
-	int src;
-	if (NODE_GetMyAddress(&src) < 0) {
-		LOG_User("Fail: Create a node first.");
-		return;
-	}
-	tPACKET	tpkt;
-	PKT_MakeReq(src, atoi(argv[0]), strlen(argv[1]), (uint8_t*)&argv[1][0], &tpkt);
-
-	char ip[] = "127.0.0.1";
-	int addr = tpkt.dst;
-	if (NODE_SendUnicast(ip, addr, sizeof(tpkt), (char*)&tpkt) < 0) {
-		LOG_User("Fail: Send unicast.");
-	}
-}
-
-static void CMD_SendNotification(int argc, char* argv[]) {
 	if (argc != 1) {
 		LOG_User("Fail: Wrong argument.");
 		return ;
 	}
 
+	API_MakeReq(atoi(argv[0]));
+	API_SendPacket();
+
+	LOG_User("Success: Send a request.");
+}
+
+static void CMD_SendNotification(int argc, char* argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	int src;
-	if (NODE_GetMyAddress(&src) < 0) {
+	if (SOCKET_GetMyAddress(&src) < 0) {
 		LOG_User("Fail: Create a node first.");
 		return ;
 	}
-	tPACKET tpkt;
-	PKT_MakeNtf(src, strlen(argv[0]), (uint8_t*)&argv[0][0], &tpkt);
+	//tPACKET tpkt;
+	//PKT_MakeNtf(src, strlen(argv[0]), (uint8_t*)&argv[0][0], &tpkt);
 
-	if (NODE_SendBroadcast(sizeof(tpkt), (char*)&tpkt) < 0) {
-		LOG_User("Fail: Send broadcast.");
-	}
+	//if (SOCKET_SendBroadcast(sizeof(tpkt), (char*)&tpkt) < 0) {
+	//	LOG_User("Fail: Send broadcast.");
+	//}
 }
 
 static void CMD_Exit(int argc, char* argv[]) {
 	UNUSED(argc);
 	UNUSED(argv);
 
-	if (NODE_Destroy() < 0) {
+	if (SOCKET_Destroy() < 0) {
 		LOG_User("Fail: Close a node.");
 	}
 

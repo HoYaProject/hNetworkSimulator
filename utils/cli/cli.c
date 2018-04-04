@@ -20,7 +20,7 @@
 
 /* Private Variables ---------------------------------------------------------*/
 static struct termios	old_tty;
-static ptCOMMAND	ptCmd;
+static ptCLI_COMMAND	ptCmd;
 
 /* Private Function Prototypes -----------------------------------------------*/
 static void kbcleanup(void);
@@ -29,7 +29,7 @@ static void makeCommand(const char ch);
 static void processCommand(const char* const cmd);
 
 /* APIs ----------------------------------------------------------------------*/
-void CLI_Init(const ptCOMMAND cmd) {
+void CLI_Init(const ptCLI_COMMAND cmd) {
 	tcgetattr(STDIN_FILENO, &old_tty);
 	struct termios	new_tty = old_tty;
 

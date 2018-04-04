@@ -43,6 +43,7 @@ class ProtocolTest(unittest.TestCase):
         self.nodes[1].start()
         self.nodes[2].start()
         self.nodes[3].start()
+        self.nodes[1].sendReq(2)
 
 
 # Main Routine ---------------------------------------------------------------#

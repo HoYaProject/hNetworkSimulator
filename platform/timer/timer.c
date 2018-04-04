@@ -1,5 +1,5 @@
 /*******************************************************************************
- * @file		utils/timer/timer.c
+ * @file		platform/timer/timer.c
  * @brief		Timer module.
  * @author	llHoYall <hoya128@gmail.com>
  * @version	v1.0

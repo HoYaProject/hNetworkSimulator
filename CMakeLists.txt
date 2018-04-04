@@ -7,20 +7,20 @@ set (CMAKE_C_FLAGS "-std=gnu11 -Os -Wall -Wextra -Wshadow")
 include_directories (
 	utils
 	utils/log
-	utils/timer
 	utils/cli
 	utils/ll
-	node
-	packet
+	platform/timer
+	platform/socket
+	stack
 )
 
 file (GLOB SRCS
 	utils/log/log.c
-	utils/timer/timer.c
 	utils/cli/cli.c
 	utils/ll/ll.c
-	node/node.c
-	packet/packet.c
+	platform/timer/timer.c
+	platform/socket/socket.c
+	stack/api.c
 	main.c
 )
 
