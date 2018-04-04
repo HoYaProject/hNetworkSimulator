@@ -18,6 +18,7 @@
 #include <string.h>
 #include <sys/time.h>
 // System
+#include "hDef.h"
 #include "timer.h"
 
 /* Private Variables ---------------------------------------------------------*/
@@ -89,5 +90,7 @@ eTIMER_STATUS TIMER_CreateUserTimer(timer_t* tid, const int msec, tmhandler hand
 
 /* Private Functions ---------------------------------------------------------*/
 static void TIMER_SystemHandler(const int signum) {
+	UNUSED(signum);
+
 	++timer;
 }

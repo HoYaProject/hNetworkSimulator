@@ -16,6 +16,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <errno.h>
 // System
 #include "log.h"
 #include "node.h"
@@ -172,7 +173,6 @@ static eNODE_STATUS NODE_Receive(const int sock) {
 	tv.tv_usec = 10;
 	int ret = select(maxfds, &readfds, NULL, NULL, &tv);
 	if (ret < 0) {
-		perror("select()");
 		return eNODE_STATUS_FAIL_SELECT;
 	}
 	else if (ret == 0) {

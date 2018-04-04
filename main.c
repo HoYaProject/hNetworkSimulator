@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 	TIMER_CreateSystemTimer(1);
 
 	CLI_Init(tCmd);
-	CLI_DisplayMenu();
+	//CLI_DisplayMenu();
 
 	while (1) {
 		CLI_GetCommand();
