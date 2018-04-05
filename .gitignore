@@ -3,3 +3,7 @@ build/
 
 # Temporary Vim Swapfiles
 *.swp
+
+# Python
+__pycache__/
+*.pyc

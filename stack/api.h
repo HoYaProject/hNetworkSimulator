@@ -46,7 +46,7 @@ typedef struct _tPACKET {
 	uint16_t	src;
 	uint16_t	dst;
 	tCOMMAND	tCmd;
-} tPACKET;
+} tPACKET, *ptPACKET;
 
 /* Macro Functions -----------------------------------------------------------*/
 #define API_MakeReq(dst)	\
@@ -60,5 +60,6 @@ typedef struct _tPACKET {
 eAPI_STATUS API_Init(const uint16_t addr);
 eAPI_STATUS	API_MakePacket(const uint16_t dst, const uint8_t type);
 eAPI_STATUS API_SendPacket(void);
+void API_ReceivePacket(const int* const len, const void* const data);
 
 #endif

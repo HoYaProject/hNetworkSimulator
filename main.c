@@ -31,8 +31,6 @@ static void CMD_SendRequest(int argc, char* argv[]);
 static void CMD_SendNotification(int argc, char* argv[]);
 static void CMD_Exit(int argc, char* argv[]);
 
-static void Receive(const int* const len, const void* const data);
-
 /* Private Variables ---------------------------------------------------------*/
 tCLI_COMMAND	tCmd[] = {
 	{"Help", "        Display menu", CMD_Help},
@@ -51,7 +49,7 @@ int main(int argc, char* argv[]) {
 	TIMER_CreateSystemTimer(1);
 
 	CLI_Init(tCmd);
-	//CLI_DisplayMenu();
+	CLI_DisplayMenu();
 
 	while (1) {
 		CLI_GetCommand();
@@ -78,7 +76,7 @@ static void CMD_Start(int argc, char* argv[]) {
 	}
 
 	int addr = atoi(argv[0]);
-	if (SOCKET_Create(addr, Receive) < 0) {
+	if (SOCKET_Create(addr, API_ReceivePacket) < 0) {
 		LOG_User("Fail: Create a socket interface.");
 		return ;
 	}
@@ -106,17 +104,10 @@ static void CMD_SendNotification(int argc, char* argv[]) {
 	UNUSED(argc);
 	UNUSED(argv);
 
-	int src;
-	if (SOCKET_GetMyAddress(&src) < 0) {
-		LOG_User("Fail: Create a node first.");
-		return ;
-	}
-	//tPACKET tpkt;
-	//PKT_MakeNtf(src, strlen(argv[0]), (uint8_t*)&argv[0][0], &tpkt);
+	API_MakeNtf();
+	API_SendPacket();
 
-	//if (SOCKET_SendBroadcast(sizeof(tpkt), (char*)&tpkt) < 0) {
-	//	LOG_User("Fail: Send broadcast.");
-	//}
+	LOG_User("Success: Send a notification.");
 }
 
 static void CMD_Exit(int argc, char* argv[]) {
@@ -129,8 +120,4 @@ static void CMD_Exit(int argc, char* argv[]) {
 
 	LOG_User("Exit program.");
 	exit(0);
-}
-
-static void Receive(const int* const len, const void* const data) {
-	LOG_Dump(*len, (char*)data);
 }

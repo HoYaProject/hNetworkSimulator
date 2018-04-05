@@ -189,7 +189,6 @@ static eSOCKET_STATUS SOCKET_Receive(const int sock) {
 		}
 		else {
 			rxbuf[rxlen++] = '\0';
-			puts(rxbuf);
 			tSocket.handler(&rxlen, rxbuf);
 		}
 	}

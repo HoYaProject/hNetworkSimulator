@@ -25,16 +25,19 @@ class Node:
         time.sleep(0.2)
 
     def send_command(self, cmd):
-        print(cmd)
         self.pexpect.send(cmd + '\n')
 
     def start(self):
-        self.send_command('Start %d' % self.nodeid)
+        self.send_command('Start {}'.format(self.nodeid))
         self.pexpect.expect('\[USR\] Success: Create a node.')
 
     def sendReq(self, dst):
-        self.send_command('req {}'.format(dst))
+        self.send_command('Req {}'.format(dst))
         self.pexpect.expect('\[USR\] Success: Send a request.')
+
+    def sendNtf(self):
+        self.send_command('Ntf')
+        self.pexpect.expect('\[USR\] Success: Send a notification.')
 
     def stop(self):
         self.send_command('Exit')
