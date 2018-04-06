@@ -9,3 +9,13 @@ HoYa's network simulator project.
 
 > $ cd build && ./ns
 
+## Test
+
+> $ cd scripts && ./test.py
+
+## Requirements
+
+- clang
+- cmake
+- python3
+

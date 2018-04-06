@@ -45,13 +45,21 @@ eLL_STATUS LL_AppendTail(const ptLL head, const ptLL node) {
 	return eLL_STATUS_SUCCESS;
 }
 
+eLL_STATUS LL_RemoveNode(const ptLL node) {
+	if (node == NULL)
+		return eLL_STATUS_INVALID_ARGS;
+
+	(node->prev)->next = node->next;
+	(node->next)->prev = node->prev;
+	return eLL_STATUS_SUCCESS;
+}
+
 eLL_STATUS LL_RemoveHead(const ptLL head, const pptLL node) {
 	if (head == NULL)
 		return eLL_STATUS_INVALID_ARGS;
 
+	LL_RemoveNode(head->next);
 	*node = head->next;
-	head->next = (*node)->next;
-	((*node)->next)->prev  = head;
 	(*node)->prev = NULL;
 	(*node)->next = NULL;
 	return eLL_STATUS_SUCCESS;
@@ -61,9 +69,8 @@ eLL_STATUS LL_RemoveTail(const ptLL head, const pptLL node) {
 	if (head == NULL)
 		return eLL_STATUS_INVALID_ARGS;
 
+	LL_RemoveNode(head->prev);
 	*node = head->prev;
-	((*node)->prev)->next = head;
-	head->prev = (*node)->prev;
 	(*node)->prev = NULL;
 	(*node)->next = NULL;
 	return eLL_STATUS_SUCCESS;

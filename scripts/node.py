@@ -34,6 +34,12 @@ class Node:
     def sendReq(self, dst):
         self.send_command('Req {}'.format(dst))
         self.pexpect.expect('\[USR\] Success: Send a request.')
+        self.pexpect.expect('\[USR\] Received a response.')
+
+    def get(self, dst):
+        self.send_command('Get {}'.format(dst))
+        self.pepect.expect('\[USR\] SUCCESS: Receive packet.')
+        self.pexpect.expect('\[USR\] Received a notification.')
 
     def sendNtf(self):
         self.send_command('Ntf')

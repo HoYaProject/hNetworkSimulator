@@ -16,7 +16,6 @@
 #include "hDef.h"
 #include "log.h"
 #include "cli.h"
-#include "ll.h"
 // System - Platform
 #include "timer.h"
 #include "socket.h"
@@ -30,9 +29,12 @@ static void CMD_Start(int argc, char* argv[]);
 static void CMD_SendRequest(int argc, char* argv[]);
 static void CMD_SendNotification(int argc, char* argv[]);
 static void CMD_Exit(int argc, char* argv[]);
+// Handler
+static void hRsp(void);
+static void hNtf(void);
 
 /* Private Variables ---------------------------------------------------------*/
-tCLI_COMMAND	tCmd[] = {
+static tCLI_COMMAND	tCmd[] = {
 	{"Help", "        Display menu", CMD_Help},
 	{"Start", "       Start a node\r\n             - <addr (uint8)>", CMD_Start},
 	{"Req", "         Send request\r\n             - <addr (uint8)>", CMD_SendRequest},
@@ -53,7 +55,7 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		CLI_GetCommand();
-		SOCKET_Run();
+		API_Process();
 
 		usleep(100);
 	}
@@ -76,14 +78,12 @@ static void CMD_Start(int argc, char* argv[]) {
 	}
 
 	int addr = atoi(argv[0]);
-	if (SOCKET_Create(addr, API_ReceivePacket) < 0) {
-		LOG_User("Fail: Create a socket interface.");
-		return ;
-	}
 	if (API_Init(addr) < 0) {
 		LOG_User("Fail: Init stack.");
 		return ;
 	}
+	API_AddHandler(eAPI_TYPE_RSP, hRsp);
+	API_AddHandler(eAPI_TYPE_NTF, hNtf);
 
 	LOG_User("Success: Create a node.");
 }
@@ -95,7 +95,6 @@ static void CMD_SendRequest(int argc, char* argv[]) {
 	}
 
 	API_MakeReq(atoi(argv[0]));
-	API_SendPacket();
 
 	LOG_User("Success: Send a request.");
 }
@@ -105,7 +104,6 @@ static void CMD_SendNotification(int argc, char* argv[]) {
 	UNUSED(argv);
 
 	API_MakeNtf();
-	API_SendPacket();
 
 	LOG_User("Success: Send a notification.");
 }
@@ -114,10 +112,17 @@ static void CMD_Exit(int argc, char* argv[]) {
 	UNUSED(argc);
 	UNUSED(argv);
 
-	if (SOCKET_Destroy() < 0) {
+	if (API_Shutdown() < 0)
 		LOG_User("Fail: Close a node.");
-	}
 
 	LOG_User("Exit program.");
 	exit(0);
+}
+
+static void hRsp(void) {
+	LOG_User("Received a response.");
+}
+
+static void hNtf(void) {
+	LOG_User("Received a notification.");
 }

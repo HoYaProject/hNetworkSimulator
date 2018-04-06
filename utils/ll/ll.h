@@ -26,6 +26,7 @@ typedef struct _tLL {
 eLL_STATUS LL_Init(const ptLL head);
 eLL_STATUS LL_InsertHead(const ptLL head, const ptLL node);
 eLL_STATUS LL_AppendTail(const ptLL head, const ptLL node);
+eLL_STATUS LL_RemoveNode(const ptLL node);
 eLL_STATUS LL_RemoveHead(const ptLL head, const pptLL node);
 eLL_STATUS LL_RemoveTail(const ptLL head, const pptLL node);
 eLL_STATUS LL_RemoveAll(const ptLL head);
