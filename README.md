@@ -1,4 +1,5 @@
 # hNetworkSimulator
+
 HoYa's network simulator project.
 
 ## Build
@@ -19,3 +20,4 @@ HoYa's network simulator project.
 - cmake
 - python3
 
+Tested on Linux (Ubuntu)
